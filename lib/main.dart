@@ -60,7 +60,7 @@ class _VenturAppState extends State<VenturApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: _navigatorKey, // On attache la clé à notre application
-      title: 'Ventür',
+      title: 'Ventur',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Application d'une police élégante similaire à la maquette

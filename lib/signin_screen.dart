@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'background_wrapper.dart';
-import 'signup_screen.dart';
 import 'home_screen.dart';
+import 'signup_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -102,8 +102,9 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return BackgroundWrapper(
-      curveTopLeft: true,
-      // Ici, on inverse la courbe pour correspondre à l'écran de droite !
+      curveTopLeft: false,
+      // Courbe en haut à droite pour correspondre aux autres
+      minHeightFactor: 0.60,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 25),
 
             _buildTextField(
               label: 'E-mail',
@@ -134,6 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 icon: Icon(
                   _obscurePassword ? Icons.visibility_off : Icons.visibility,
                   color: Colors.grey,
+                  size: 20,
                 ),
                 onPressed: () {
                   setState(() {
@@ -145,7 +147,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
             const SizedBox(height: 10),
 
-            // Ligne contenant "Remember me" et "Mot de passe oublié ?"
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -162,6 +163,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           });
                         },
                         activeColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -171,9 +175,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ],
                 ),
-                // Bouton cliquable pour mot de passe oublié
                 TextButton(
                   onPressed: _resetPassword,
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: const Text(
                     'Mot de passe oublié ?',
                     style: TextStyle(
@@ -186,9 +194,8 @@ class _SignInScreenState extends State<SignInScreen> {
               ],
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
 
-            // Bouton Sign in
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -197,8 +204,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 child: _isLoading
@@ -212,39 +220,42 @@ class _SignInScreenState extends State<SignInScreen> {
                       )
                     : const Text(
                         'Se connecter',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 25),
 
-            // Lien vers la page d'inscription
             Center(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpScreen(),
-                    ),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Pas encore membre ? ',
+              child: Column(
+                children: [
+                  Text(
+                    'Pas encore membre ?',
                     style: TextStyle(color: Colors.grey[600], fontSize: 14),
-                    children: [
-                      TextSpan(
-                        text: 'S\'inscrire',
-                        style: TextStyle(
-                          color: Colors.blue[700],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'S\'inscrire',
+                      style: TextStyle(
+                        color: Colors.blue[700],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -253,7 +264,6 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  // La même fonction utilitaire pour les champs de texte
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,
@@ -261,27 +271,40 @@ class _SignInScreenState extends State<SignInScreen> {
     TextInputType keyboardType = TextInputType.text,
     Widget? suffixIcon,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        suffixIcon: suffixIcon,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+        const SizedBox(height: 5),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 12,
+            ),
+            suffixIcon: suffixIcon,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey.shade200),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.black, width: 1.5),
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.black),
-        ),
-      ),
+      ],
     );
   }
 }

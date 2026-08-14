@@ -99,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
 
             _buildTextField(label: 'Nom', controller: _nameController),
             const SizedBox(height: 15),
@@ -110,7 +110,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             const SizedBox(height: 15),
 
-            // 2. Mise à jour du champ Password avec le bouton
             _buildTextField(
               label: 'Mot de passe',
               controller: _passwordController,
@@ -119,6 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 icon: Icon(
                   _obscurePassword ? Icons.visibility_off : Icons.visibility,
                   color: Colors.grey,
+                  size: 20,
                 ),
                 onPressed: () {
                   setState(() {
@@ -129,7 +129,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             const SizedBox(height: 15),
 
-            // 3. Mise à jour du champ Confirm Password avec le bouton
             _buildTextField(
               label: 'Confirmer le mot de passe',
               controller: _confirmPasswordController,
@@ -140,6 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ? Icons.visibility_off
                       : Icons.visibility,
                   color: Colors.grey,
+                  size: 20,
                 ),
                 onPressed: () {
                   setState(() {
@@ -164,6 +164,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       });
                     },
                     activeColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -176,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
 
             SizedBox(
               width: double.infinity,
@@ -186,8 +189,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 child: _isLoading
@@ -199,39 +203,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           strokeWidth: 2,
                         ),
                       )
-                    : const Text('S\'inscrire', style: TextStyle(fontSize: 16)),
+                    : const Text(
+                        'S\'inscrire',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
               ),
             ),
 
             const SizedBox(height: 25),
 
-            // Lien vers la page de connexion
             Center(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignInScreen(),
-                    ),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Déjà membre ? \n',
+              child: Column(
+                children: [
+                  Text(
+                    'Déjà membre ?',
                     style: TextStyle(color: Colors.grey[600], fontSize: 14),
-                    children: [
-                      TextSpan(
-                        text: 'Se connecter',
-                        style: TextStyle(
-                          color: Colors.blue[700],
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
                   ),
-                  textAlign: TextAlign.center,
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignInScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Se connecter',
+                      style: TextStyle(
+                        color: Colors.blue[700],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -240,36 +249,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  // 4. Modification de la fonction utilitaire pour accepter une icône
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,
     bool obscureText = false,
     TextInputType keyboardType = TextInputType.text,
-    Widget? suffixIcon, // <- Ajout de ce paramètre
+    Widget? suffixIcon,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        suffixIcon: suffixIcon,
-        // <- Utilisation de l'icône ici
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+        const SizedBox(height: 5),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 12,
+            ),
+            suffixIcon: suffixIcon,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey.shade200),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.black, width: 1.5),
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.black),
-        ),
-      ),
+      ],
     );
   }
 }

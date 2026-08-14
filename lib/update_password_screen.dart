@@ -75,7 +75,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Reset Password.',
+              'Réinitialisation.',
               style: GoogleFonts.poppins(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -84,19 +84,20 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Enter your new password below.',
+              'Entrez votre nouveau mot de passe ci-dessous.',
               style: TextStyle(color: Colors.grey[600], fontSize: 14),
             ),
             const SizedBox(height: 30),
 
             _buildTextField(
-              label: 'New Password',
+              label: 'Nouveau mot de passe',
               controller: _passwordController,
               obscureText: _obscurePassword,
               suffixIcon: IconButton(
                 icon: Icon(
                   _obscurePassword ? Icons.visibility_off : Icons.visibility,
                   color: Colors.grey,
+                  size: 20,
                 ),
                 onPressed: () =>
                     setState(() => _obscurePassword = !_obscurePassword),
@@ -105,7 +106,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
             const SizedBox(height: 15),
 
             _buildTextField(
-              label: 'Confirm New Password',
+              label: 'Confirmer le mot de passe',
               controller: _confirmPasswordController,
               obscureText: _obscureConfirmPassword,
               suffixIcon: IconButton(
@@ -114,6 +115,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                       ? Icons.visibility_off
                       : Icons.visibility,
                   color: Colors.grey,
+                  size: 20,
                 ),
                 onPressed: () => setState(
                   () => _obscureConfirmPassword = !_obscureConfirmPassword,
@@ -131,8 +133,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 child: _isLoading
@@ -145,8 +148,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                         ),
                       )
                     : const Text(
-                        'Update Password',
-                        style: TextStyle(fontSize: 16),
+                        'Mettre à jour',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                       ),
               ),
             ),
@@ -162,26 +165,39 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     bool obscureText = false,
     Widget? suffixIcon,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        suffixIcon: suffixIcon,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+        const SizedBox(height: 5),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 12,
+            ),
+            suffixIcon: suffixIcon,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey.shade200),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.black, width: 1.5),
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.black),
-        ),
-      ),
+      ],
     );
   }
 }
