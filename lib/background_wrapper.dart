@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class BackgroudWrapper extends StatelessWidget {
+class BackgroundWrapper extends StatelessWidget {
   final Widget child;
   final bool curveTopLeft;
 
-  const BackgroudWrapper({
+  const BackgroundWrapper({
     super.key,
     required this.child,
     this.curveTopLeft = false,
@@ -38,7 +38,7 @@ class BackgroudWrapper extends StatelessWidget {
                 ),
               ),
 
-              padding: const EdgeInsets.symmetric(horizontal:  30, vertical: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               child: child,
             ),
           ),
